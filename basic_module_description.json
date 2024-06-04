@@ -1,0 +1,33 @@
+{
+    "Basic Module": "module_gd", 
+    "Brief Description": "This module is for detecting a variety of gestures people might do as a non-verbal form of communication.", 
+    "Events": [], 
+    "Functions": [
+        {
+            "Description": "This function detects at which location on the floor the closest person is pointing at with both of her hands.", 
+            "Exec-condition": "A map of the environment must exist.", 
+            "Input-params": [], 
+            "Name": "detectFloorPointing", 
+            "Output-params": [
+                {
+                    "Data-type": "std_msgs/Bool", 
+                    "Description": "Flag that indicates whether the module was able to detect the floor-pointing gesture.", 
+                    "Name": "success"
+                }, 
+                {
+                    "Data-type": "geometry_msgs/Pose2D", 
+                    "Description": "Two-dimensional pose (within the map) where the person is pointing to.", 
+                    "Name": "pointed_loc"
+                }, 
+                {
+                    "Data-type": "std_msgs/String", 
+                    "Description": "String indicating which hand is pointing, i.e. left or right.", 
+                    "Name": "pointing_hand"
+                }
+            ]
+        }
+    ], 
+    "Hardware Required": [
+        "kinect-rgbd sensor or orbbec rgbd-sensor"
+    ]
+}

@@ -1,0 +1,2 @@
+string hand
+geometry_msgs/Vector3 location

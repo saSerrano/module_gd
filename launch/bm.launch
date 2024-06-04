@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!-- This file can be launched in ROS melodic and later -->
+<launch>
+	<group ns="module_gd">
+		<!-- Sensor-dependent arguments -->
+		<arg name="sensor" value="kinect"/>
+
+		<!-- Common params -->
+		<param name="basic_mod_name" value="module_gd" type="str"/>
+		<param name="debug" value="true" type="bool"/>
+		<param name="min_detection_confidence" value="0.5" type="double"/>
+		<param name="min_tracking_confidence" value="0.5" type="double"/>
+		<param name="nonwrist_joint_radius" value="5" type="int"/><!-- pixels -->
+		<param name="wrist_joint_radius" value="20" type="int"/><!-- pixels -->
+		<param name="joint_seg_thresh" value="0.15" type="double"/>
+		<param name="yolo_model" value="yolov8n" type="str"/>
+		<param name="pose_topic" value="/pose" type="str"/>
+		<param name="sensor" value="$(arg sensor)"/>
+		<param name="scale_factor" value="0.5" type="double"/>
+		<param name="min_dist_pointed_loc" value="0.5" type="double"/><!-- Meters -->
+
+		<!-- Sensor-dependent params -->
+		<group if="$(eval sensor == 'orbbec')">
+			<!-- Orbbec Astra params -->
+            <param name="horizontal_fov" value="60.0" type="double"/>
+			<param name="vertical_fov" value="49.5" type="double"/>
+			<param name="color_topic" value="/orbbec_torso_camera/rgb/image_raw" type="str"/>
+			<param name="depth_topic" value="/orbbec_torso_camera/depth_registered/image_raw" type="str"/>
+			<param name="depthcam_link" value="orbbec_astra_head_cam_depth_frame" type="str"/>
+        </group>
+		<group if="$(eval sensor == 'kinect')">
+			<!-- Kinect Azure params -->
+			<param name="color_topic" value="/rgb/image_raw" type="str"/>
+			<param name="depth_topic" value="/depth_to_rgb/hw_registered/image_rect_raw" type="str"/>
+			<param name="depthcam_link" value="azure_kinect_head_depth_camera_link" type="str"/>
+			<param name="horizontal_fov" value="130.08781" type="double"/>
+			<param name="vertical_fov" value="98.03241" type="double"/>
+        </group>
+		
+		<!-- Nodes -->
+		<node pkg="module_gd" type="bm_node.py" name="module_gd" output="screen" respawn="false"/>
+		<node pkg="module_gd" type="jointextract_node.py" name="jointextract_node" output="screen" respawn="false"/>
+		<node pkg="module_gd" type="gesture_detector_node" name="gesturedetect_node" output="screen" respawn="false"/>
+	</group>
+</launch>
